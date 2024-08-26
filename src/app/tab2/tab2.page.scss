@@ -1,0 +1,43 @@
+/* Encabezado */
+ion-header {
+    --background: #007BFF; /* Color de fondo azul brillante */
+  }
+  
+  ion-toolbar {
+    --background: #007BFF; /* Fondo del toolbar */
+  }
+  
+  ion-title {
+    color: #FFFFFF; /* Color del texto del título */
+    text-align: center; /* Centrar el texto */
+    font-size: 1.5em; /* Tamaño de fuente más grande */
+    font-weight: bold; /* Negrita para el título */
+  }
+  
+  /* Contenido */
+  .photo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    padding: 16px;
+  }
+  
+  .latest-photo {
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 8px; /* Bordes redondeados */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra alrededor de la imagen */
+  }
+  
+  /* Botón Flotante */
+  .fab-button {
+    --background: #FF5722; /* Color de fondo del botón flotante */
+    --color: #FFFFFF; /* Color del ícono */
+    --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Sombra del botón */
+  }
+  
+  .fab-button:hover {
+    --background: #E64A19; /* Color del botón en hover */
+  }
+  
