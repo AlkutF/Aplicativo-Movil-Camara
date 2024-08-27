@@ -5,8 +5,8 @@
 </ion-header>
 
 <ion-content>
-  <div *ngIf="latestPhoto">
-    <img [src]="latestPhoto.webviewPath" alt="Latest Photo" />
+  <div class="latest-photo-container" *ngIf="latestPhoto">
+    <img class="latest-photo" [src]="latestPhoto.webviewPath" alt="Latest Photo" />
   </div>
 
   <ion-fab vertical="bottom" horizontal="center" slot="fixed">

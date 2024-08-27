@@ -1,43 +1,50 @@
 /* Encabezado */
 ion-header {
-    --background: #007BFF; /* Color de fondo azul brillante */
-  }
-  
-  ion-toolbar {
-    --background: #007BFF; /* Fondo del toolbar */
-  }
-  
-  ion-title {
-    color: #FFFFFF; /* Color del texto del título */
-    text-align: center; /* Centrar el texto */
-    font-size: 1.5em; /* Tamaño de fuente más grande */
-    font-weight: bold; /* Negrita para el título */
-  }
-  
-  /* Contenido */
-  .photo-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    padding: 16px;
-  }
-  
-  .latest-photo {
-    max-width: 100%;
-    max-height: 100%;
-    border-radius: 8px; /* Bordes redondeados */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra alrededor de la imagen */
-  }
-  
-  /* Botón Flotante */
-  .fab-button {
-    --background: #FF5722; /* Color de fondo del botón flotante */
-    --color: #FFFFFF; /* Color del ícono */
-    --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Sombra del botón */
-  }
-  
-  .fab-button:hover {
-    --background: #E64A19; /* Color del botón en hover */
-  }
-  
+  --background: #F58529; /* Color de fondo naranja */
+}
+
+ion-toolbar {
+  --background: #F58529; /* Fondo del toolbar */
+}
+
+ion-title {
+  color: #FFFFFF; /* Color del texto del título */
+  text-align: center; /* Centrar el texto */
+  font-size: 1.5em; /* Tamaño de fuente más grande */
+  font-weight: bold; /* Negrita para el título */
+}
+
+/* Contenido */
+ion-content {
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --padding-top: 16px;
+  --padding-bottom: 16px;
+}
+
+.latest-photo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: auto; /* Ajustar altura según el contenido */
+  margin: 16px 0; /* Espacio superior e inferior */
+}
+
+.latest-photo {
+  max-width: 90%; /* Limitar el ancho al 90% del contenedor */
+  max-height: 80vh; /* Limitar la altura al 80% de la ventana de visualización */
+  border-radius: 16px; /* Bordes redondeados */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra alrededor de la imagen */
+  object-fit: cover; /* Mantener la relación de aspecto */
+}
+
+/* Botón Flotante */
+ion-fab-button {
+  --background: #F58529; /* Color de fondo del botón flotante */
+  --color: #FFFFFF; /* Color del ícono */
+  --box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Sombra del botón */
+}
+
+ion-fab-button:hover {
+  --background: #F58529; /* Color del botón en hover */
+}

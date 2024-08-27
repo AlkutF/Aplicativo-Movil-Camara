@@ -103,24 +103,26 @@ export class PhotoService {
         path: photo.filepath,
         directory: Directory.Data
       });
-
+  
       let blob: Blob;
       if (typeof file.data === 'string') {
         blob = await this.convertBase64ToBlob(file.data);
       } else {
         blob = file.data;
       }
-
+  
       const newFileName = `saved_${Date.now()}.jpeg`;
       await Filesystem.writeFile({
         path: newFileName,
         data: await this.blobToBase64(blob),
         directory: Directory.Documents
       });
-
+  
       console.log('Foto guardada exitosamente en', newFileName);
+      return true; // Retorna true si la operación fue exitosa
     } catch (error) {
       console.error('Error al guardar la foto', error);
+      return false; // Retorna false si hubo un error
     }
   }
 
