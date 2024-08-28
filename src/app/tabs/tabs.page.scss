@@ -1,24 +1,22 @@
 
-/* Fondo y color de las pestañas */
 ion-tab-bar {
-    --background: #FFFFFF; /* Color de fondo de la barra de pestañas */
-    --color: #333333; /* Color del texto y los íconos */
-    --color-selected: #F58529; /* Color del texto y los íconos seleccionados */
+    --background: #FFFFFF; 
+    --color: #333333; 
+    --color-selected: #F58529; 
 }
 
-/* Estilo para los botones de pestañas */
+
 ion-tab-button {
-    --color: #333333; /* Color del texto y los íconos no seleccionados */
-    --color-activated: #F58529; /* Color del texto y los íconos cuando están seleccionados */
+    --color: #333333; 
+    --color-activated: #F58529; 
 }
 
-/* Estilo del ícono de las pestañas */
+
 ion-icon {
-    font-size: 24px; /* Tamaño del ícono */
+    font-size: 24px; 
 }
 
-/* Estilo para las etiquetas de las pestañas */
 ion-label {
-    font-size: 12px; /* Tamaño de fuente más pequeño para las etiquetas */
-    font-weight: bold; /* Negrita para las etiquetas */
+    font-size: 12px;
+    font-weight: bold; 
 }

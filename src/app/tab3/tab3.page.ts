@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PhotoService, UserPhoto } from '../services/photo.service';
+import { ServicioDeFotos, FotoDeUsuario } from '../services/photo.service';
 import { ActionSheetController, ToastController } from '@ionic/angular';
 
 @Component({
@@ -7,17 +7,17 @@ import { ActionSheetController, ToastController } from '@ionic/angular';
   templateUrl: 'tab3.page.html',
   styleUrls: ['tab3.page.scss']
 })
-export class Tab3Page implements OnInit {
-  public photos: UserPhoto[] = [];
+export class Tab3Page  implements OnInit {
+  public fotos: FotoDeUsuario[] = [];
 
   constructor(
-    public photoService: PhotoService,
-    public actionSheetController: ActionSheetController,
-    public toastController: ToastController
+    public servicioDeFotos: ServicioDeFotos,
+    public controladorDeAccion: ActionSheetController,
+    public controladorDeToast: ToastController
   ) {}
 
-  public async showActionSheet(photo: UserPhoto, position: number) {
-    const actionSheet = await this.actionSheetController.create({
+  public async mostrarHojaDeAcciones(foto: FotoDeUsuario, posicion: number) {
+    const hojaDeAcciones = await this.controladorDeAccion.create({
       header: 'Opciones',
       buttons: [
         {
@@ -25,7 +25,7 @@ export class Tab3Page implements OnInit {
           role: 'destructive',
           icon: 'trash',
           handler: () => {
-            this.photoService.deletePicture(photo, position);
+            this.servicioDeFotos.eliminarFoto(foto, posicion);
           }
         },
         {
@@ -33,8 +33,8 @@ export class Tab3Page implements OnInit {
           role: 'save',
           icon: 'save',
           handler: async () => {
-            await this.photoService.saveToDevice(photo);
-            this.presentToast('Imagen guardada en el dispositivo');
+            await this.servicioDeFotos.guardarEnDispositivo(foto);
+            this.presentarToast('Imagen guardada en el dispositivo');
           }
         },
         {
@@ -45,21 +45,21 @@ export class Tab3Page implements OnInit {
         }
       ]
     });
-    await actionSheet.present();
+    await hojaDeAcciones.present();
   }
 
   async ngOnInit() {
-    await this.photoService.loadSaved();
-    this.loadPhotos();
+    await this.servicioDeFotos.cargarGuardado();
+    this.cargarFotos();
   }
 
-  private loadPhotos() {
-    this.photos = this.photoService.photos;
+  private cargarFotos() {
+    this.fotos = this.servicioDeFotos.fotos;
   }
 
-  private async presentToast(message: string) {
-    const toast = await this.toastController.create({
-      message: message,
+  private async presentarToast(mensaje: string) {
+    const toast = await this.controladorDeToast.create({
+      message: mensaje,
       duration: 2000, 
       position: 'bottom' 
     });

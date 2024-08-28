@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PhotoService, UserPhoto } from '../services/photo.service';
+import { ServicioDeFotos, FotoDeUsuario } from '../services/photo.service';
 
 @Component({
   selector: 'app-tab2',
@@ -7,21 +7,21 @@ import { PhotoService, UserPhoto } from '../services/photo.service';
   styleUrls: ['tab2.page.scss']
 })
 export class Tab2Page implements OnInit {
-  public latestPhoto: UserPhoto | undefined;
+  public fotoMasReciente: FotoDeUsuario | undefined;
 
-  constructor(private photoService: PhotoService) {}
+  constructor(private servicioDeFotos: ServicioDeFotos) {}
 
   async ngOnInit() {
-    await this.photoService.loadSaved();
-    this.loadLatestPhoto();
+    await this.servicioDeFotos.cargarGuardado();
+    this.cargarFotoMasReciente();
   }
 
-  async addPhotoToGallery() {
-    await this.photoService.addNewToGallery();
-    this.loadLatestPhoto();
+  async agregarFotoAGaleria() {
+    await this.servicioDeFotos.agregarNuevaAGaleria();
+    this.cargarFotoMasReciente();
   }
 
-  private loadLatestPhoto() {
-    this.latestPhoto = this.photoService.photos[0];
+  private cargarFotoMasReciente() {
+    this.fotoMasReciente = this.servicioDeFotos.fotos[0];
   }
 }

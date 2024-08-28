@@ -7,58 +7,58 @@ import { Platform } from '@ionic/angular';
 @Injectable({
   providedIn: 'root'
 })
-export class PhotoService {
-  public photos: UserPhoto[] = [];
-  private PHOTO_STORAGE: string = 'photos';
-  private platform: Platform;
+export class ServicioDeFotos {
+  public fotos: FotoDeUsuario[] = [];
+  private ALMACENAMIENTO_DE_FOTOS: string = 'fotos';
+  private plataforma: Platform;
 
-  constructor(platform: Platform) {
-    this.platform = platform;
+  constructor(plataforma: Platform) {
+    this.plataforma = plataforma;
   }
 
-  public async addNewToGallery() {
-    const capturedPhoto = await Camera.getPhoto({
+  public async agregarNuevaAGaleria() {
+    const fotoCapturada = await Camera.getPhoto({
       resultType: CameraResultType.Uri, 
       source: CameraSource.Camera, 
       quality: 100 
     });
 
-    const savedImageFile = await this.savePicture(capturedPhoto);
-    this.photos.unshift(savedImageFile);
+    const archivoImagenGuardado = await this.guardarImagen(fotoCapturada);
+    this.fotos.unshift(archivoImagenGuardado);
 
     await Preferences.set({
-      key: this.PHOTO_STORAGE,
-      value: JSON.stringify(this.photos),
+      key: this.ALMACENAMIENTO_DE_FOTOS,
+      value: JSON.stringify(this.fotos),
     });
   }
 
-  public async deletePicture(photo: UserPhoto, position: number) {
-    this.photos.splice(position, 1);
+  public async eliminarFoto(foto: FotoDeUsuario, posicion: number) {
+    this.fotos.splice(posicion, 1);
     await Preferences.set({
-      key: this.PHOTO_STORAGE,
-      value: JSON.stringify(this.photos)
+      key: this.ALMACENAMIENTO_DE_FOTOS,
+      value: JSON.stringify(this.fotos)
     });
 
-    const filename = photo.filepath.substr(photo.filepath.lastIndexOf('/') + 1);
+    const nombreArchivo = foto.archivoRuta.substr(foto.archivoRuta.lastIndexOf('/') + 1);
 
     await Filesystem.deleteFile({
-      path: filename,
+      path: nombreArchivo,
       directory: Directory.Data
     });
   }
 
-  public async loadSaved() {
-    const { value } = await Preferences.get({ key: this.PHOTO_STORAGE });
-    this.photos = (value ? JSON.parse(value) : []) as UserPhoto[];
+  public async cargarGuardado() {
+    const { value } = await Preferences.get({ key: this.ALMACENAMIENTO_DE_FOTOS });
+    this.fotos = (value ? JSON.parse(value) : []) as FotoDeUsuario[];
 
-    if (!this.platform.is('hybrid')) {
-      for (let photo of this.photos) {
+    if (!this.plataforma.is('hybrid')) {
+      for (let foto of this.fotos) {
         try {
-          const readFile = await Filesystem.readFile({
-            path: photo.filepath,
+          const archivoLeido = await Filesystem.readFile({
+            path: foto.archivoRuta,
             directory: Directory.Data
           });
-          photo.webviewPath = `data:image/jpeg;base64,${readFile.data}`;
+          foto.rutaWebview = `data:image/jpeg;base64,${archivoLeido.data}`;
         } catch (error) {
           console.error('Error al leer el archivo', error);
         }
@@ -66,82 +66,82 @@ export class PhotoService {
     }
   }
 
-  private async savePicture(photo: Photo): Promise<UserPhoto> {
-    const base64Data = await this.readAsBase64(photo);
-    const fileName = `${Date.now()}.jpeg`;
+  private async guardarImagen(foto: Photo): Promise<FotoDeUsuario> {
+    const datosBase64 = await this.leerComoBase64(foto);
+    const nombreArchivo = `${Date.now()}.jpeg`;
 
     await Filesystem.writeFile({
-      path: fileName,
-      data: base64Data,
+      path: nombreArchivo,
+      data: datosBase64,
       directory: Directory.Data
     });
 
     return {
-      filepath: fileName,
-      webviewPath: photo.webPath
+      archivoRuta: nombreArchivo,
+      rutaWebview: foto.webPath
     };
   }
 
-  private async readAsBase64(photo: Photo): Promise<string> {
-    const response = await fetch(photo.webPath!);
-    const blob = await response.blob();
-    return this.convertBlobToBase64(blob);
+  private async leerComoBase64(foto: Photo): Promise<string> {
+    const respuesta = await fetch(foto.webPath!);
+    const blob = await respuesta.blob();
+    return this.convertirBlobABase64(blob);
   }
 
-  private convertBlobToBase64(blob: Blob): Promise<string> {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onerror = reject;
-      reader.onload = () => resolve(reader.result as string);
-      reader.readAsDataURL(blob);
+  private convertirBlobABase64(blob: Blob): Promise<string> {
+    return new Promise((resolver, rechazar) => {
+      const lector = new FileReader();
+      lector.onerror = rechazar;
+      lector.onload = () => resolver(lector.result as string);
+      lector.readAsDataURL(blob);
     });
   }
 
-  public async saveToDevice(photo: UserPhoto) {
+  public async guardarEnDispositivo(foto: FotoDeUsuario) {
     try {
-      const file = await Filesystem.readFile({
-        path: photo.filepath,
+      const archivo = await Filesystem.readFile({
+        path: foto.archivoRuta,
         directory: Directory.Data
       });
   
       let blob: Blob;
-      if (typeof file.data === 'string') {
-        blob = await this.convertBase64ToBlob(file.data);
+      if (typeof archivo.data === 'string') {
+        blob = await this.convertirBase64ABlob(archivo.data);
       } else {
-        blob = file.data;
+        blob = archivo.data;
       }
   
-      const newFileName = `saved_${Date.now()}.jpeg`;
+      const nuevoNombreArchivo = `guardado_${Date.now()}.jpeg`;
       await Filesystem.writeFile({
-        path: newFileName,
-        data: await this.blobToBase64(blob),
+        path: nuevoNombreArchivo,
+        data: await this.blobABase64(blob),
         directory: Directory.Documents
       });
   
-      console.log('Foto guardada exitosamente en', newFileName);
-      return true; // Retorna true si la operación fue exitosa
+      console.log('Foto guardada exitosamente en', nuevoNombreArchivo);
+      return true; 
     } catch (error) {
       console.error('Error al guardar la foto', error);
-      return false; // Retorna false si hubo un error
+      return false; 
     }
   }
 
-  private async convertBase64ToBlob(base64: string): Promise<Blob> {
-    const response = await fetch(`data:image/jpeg;base64,${base64}`);
-    return await response.blob();
+  private async convertirBase64ABlob(base64: string): Promise<Blob> {
+    const respuesta = await fetch(`data:image/jpeg;base64,${base64}`);
+    return await respuesta.blob();
   }
 
-  private async blobToBase64(blob: Blob): Promise<string> {
-    return new Promise<string>((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onloadend = () => resolve(reader.result as string);
-      reader.onerror = reject;
-      reader.readAsDataURL(blob);
+  private async blobABase64(blob: Blob): Promise<string> {
+    return new Promise<string>((resolver, rechazar) => {
+      const lector = new FileReader();
+      lector.onloadend = () => resolver(lector.result as string);
+      lector.onerror = rechazar;
+      lector.readAsDataURL(blob);
     });
   }
 }
 
-export interface UserPhoto {
-  filepath: string;
-  webviewPath?: string;
+export interface FotoDeUsuario {
+  archivoRuta: string;
+  rutaWebview?: string;
 }

@@ -1,16 +1,16 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>Camara</ion-title>
+    <ion-title>Cámara</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <div class="latest-photo-container" *ngIf="latestPhoto">
-    <img class="latest-photo" [src]="latestPhoto.webviewPath" alt="Latest Photo" />
+  <div class="latest-photo-container" *ngIf="fotoMasReciente">
+    <img class="latest-photo" [src]="fotoMasReciente.rutaWebview" alt="Foto Más Reciente" />
   </div>
 
   <ion-fab vertical="bottom" horizontal="center" slot="fixed">
-    <ion-fab-button (click)="addPhotoToGallery()">
+    <ion-fab-button (click)="agregarFotoAGaleria()">
       <ion-icon name="camera"></ion-icon>
     </ion-fab-button>
   </ion-fab>
